@@ -50,7 +50,14 @@ def find_parts(url, text):
     """ Extract necessary parts from the base page. """
     text2 = extract_parts_body(text)
     parts = extract_parts(text2)
-    pass
+    abs_link_parts = build_abs_links(url, parts)
+    return abs_link_parts
+
+
+def build_abs_links(base, parts):
+    res = [(urllib.parse.urljoin(base, link), title)
+           for (link, title) in parts]
+    return res
 
 
 def is_correct_data_item(text):
