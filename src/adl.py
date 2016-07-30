@@ -1,7 +1,10 @@
 # import sys
 
-import re
 import argparse
+import logging
+import pprint
+import re
+import urllib.request
 
 
 def write_item(item):
