@@ -79,6 +79,7 @@ def extract_one_part(text):
 
 
 def extract_number(text):
+    """ Extract number from text. """
     regex = '(\\d+)'
     match = re.search(regex, text)
     if match and len(match.groups()) > 0:
