@@ -78,17 +78,17 @@ def extract_one_part(text):
 
 def extract_link(text):
     """ Extract link from text. """
-    regex = '''\bhref\s*=\s*['"]([^<>"]+)['"]'''
+    regex = '''\\bhref\\s*=\\s*['"]([^<>"]+)['"]'''
     match = re.search(regex, text, flags=re.IGNORECASE)
-    if len(match.groups()) > 0:
+    if match and len(match.groups()) > 0:
         return match.group(1)
 
 
 def extract_title(text):
     """ Extract title from text. """
-    regex = '''\btitle\s*=\s*['"]([^<>"]+)['"]'''
+    regex = '''\\btitle\\s*=\\s*['"]([^<>"]+)['"]'''
     match = re.search(regex, text, flags=re.IGNORECASE)
-    if len(match.groups()) > 0:
+    if match and len(match.groups()) > 0:
         return match.group(1)
 
 
