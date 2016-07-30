@@ -29,18 +29,53 @@ def flush_item(item, include, exclude):
         write_item(item)
 
 
-def proc_file(file, include, exclude):
+def load_url(url, timeout):
+    with urllib.request.urlopen(url, timeout=timeout) as conn:
+        logging.debug('url: %r, %s' % (url, pprint.pformat(conn.info)))
+        # raise Exception("skip")
+        dest = conn.geturl()
+        data = conn.read()
+        return (dest, data)
+
+
+def get_base_page(url):
+    """ Get base page. Return the page as a string. """
+    timeout = 60
+    (dest, data) = load_url(url, timeout)
+    logging.debug('dest url: %r, len: %d' % (dest, len(data)))
+    return (dest, data)
+
+
+def find_parts(url, text):
+    """ Extract necessary parts from the base page. """
+    text2 = extract_parts_body(text)
+    parts = extract_parts(text2)
+    pass
+
+
+def extract_parts(text):
+    """ Extract data items from text. """
+    pass
+
+
+def extract_parts_body(text):
+    """ Extract the text containing data items from the input text. """
+    before = 'course_inner_media_gallery'
+    after = 'slide-bottom'
+    lst1 = re.split(before, text, flags=re.IGNORECASE)
+    if len(lst1) < 2:
+        raise Exception("no beginning separator")
+    lst2 = re.split(after, lst1[1], flags=re.IGNORECASE)
+    if len(lst2) < 2:
+        raise Exception("no ending separator")
+    return lst2[1]
+
+
+def proc_file(args):
     """ process file """
-    regex = re.compile('\d+-\d+-\d+ \d+:\d+:\d+ =\w+ REPORT====')
-    item = ''
-    with open(file, encoding='utf-8') as fd:
-        for l in fd:
-            if (re.search(regex, l)):
-                flush_item(item, include, exclude)
-                item = l
-            else:
-                item += l
-    flush_item(item, include, exclude)
+    (base_url, base_page) = get_base_page(args.base)
+    parts = find_parts(base_url, base_page)
+    return
 
 
 if __name__ == "__main__":
