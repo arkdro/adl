@@ -45,7 +45,10 @@ def proc_file(file, include, exclude):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-u', "--url", help="start url")
+    parser.add_argument('-b', "--base", help="base url")
+    parser.add_argument('-l', "--loglevel")
     args = parser.parse_args()
-    proc_file(args.url)
+    logging.basicConfig(level=args.loglevel.upper(),
+                        format='%(asctime)s %(message)s')
+    proc_file(args)
 
