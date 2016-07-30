@@ -42,9 +42,7 @@ def proc_file(file, include, exclude):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-e', "--exclude", help="exclude", action='append')
-    parser.add_argument('-i', "--include", help="include", action='append')
-    parser.add_argument('-f', "--input_file", help="input file")
+    parser.add_argument('-u', "--url", help="start url")
     args = parser.parse_args()
-    proc_file(args.input_file, args.include, args.exclude)
+    proc_file(args.url)
 
