@@ -35,7 +35,8 @@ def load_url(url, timeout):
         # raise Exception("skip")
         dest = conn.geturl()
         data = conn.read()
-        return (dest, data)
+        text = str(data)
+        return (dest, text)
 
 
 def get_base_page(url):
