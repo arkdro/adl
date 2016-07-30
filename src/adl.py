@@ -1,6 +1,7 @@
 # import sys
 
 import argparse
+import html
 import logging
 import pprint
 import re
@@ -97,7 +98,8 @@ def extract_title(text):
     regex = '''\\btitle\\s*=\\s*['"]([^<>"]+)['"]'''
     match = re.search(regex, text, flags=re.IGNORECASE)
     if match and len(match.groups()) > 0:
-        return match.group(1)
+        cleared = html.unescape(match.group(1))
+        return cleared
 
 
 def extract_parts(text):
