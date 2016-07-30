@@ -118,6 +118,7 @@ def proc_file(args):
     """ process file """
     (base_url, base_page) = get_base_page(args.base)
     parts = find_parts(base_url, base_page)
+    logging.debug('parts: %s' % (pprint.pformat(parts)))
     return
 
 
