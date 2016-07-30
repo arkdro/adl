@@ -56,8 +56,8 @@ def find_parts(url, text):
 
 
 def build_abs_links(base, parts):
-    res = [(urllib.parse.urljoin(base, link), title)
-           for (link, title) in parts]
+    res = [(num, title, urllib.parse.urljoin(base, link))
+           for (num, title, link) in parts]
     return res
 
 
@@ -73,7 +73,15 @@ def extract_one_part(text):
     """ Extract link and title from text. """
     link = extract_link(text)
     title = extract_title(text)
-    return (link, title)
+    num = extract_number(title)
+    return (num, title, link)
+
+
+def extract_number(text):
+    regex = '(\\d+)'
+    match = re.search(regex, text)
+    if match and len(match.groups()) > 0:
+        return match.group(1)
 
 
 def extract_link(text):
