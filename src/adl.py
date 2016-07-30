@@ -53,9 +53,44 @@ def find_parts(url, text):
     pass
 
 
+def is_correct_data_item(text):
+    """ Predicate to test if the item is good. """
+    tags = ['mediathumbnail', 'mediatext', 'mediatitle', 'medialink',
+            'href', 'title']
+    res = all(re.search(tag, text) for tag in tags)
+    return res
+
+
+def extract_one_part(text):
+    """ Extract link and title from text. """
+    link = extract_link(text)
+    title = extract_title(text)
+    return (link, title)
+
+
+def extract_link(text):
+    """ Extract link from text. """
+    regex = '''\bhref\s*=\s*['"]([^<>"]+)['"]'''
+    match = re.search(regex, text, flags=re.IGNORECASE)
+    if len(match.groups()) > 0:
+        return match.group(1)
+
+
+def extract_title(text):
+    """ Extract title from text. """
+    regex = '''\btitle\s*=\s*['"]([^<>"]+)['"]'''
+    match = re.search(regex, text, flags=re.IGNORECASE)
+    if len(match.groups()) > 0:
+        return match.group(1)
+
+
 def extract_parts(text):
     """ Extract data items from text. """
-    pass
+    sep = 'medialisting'
+    lst = re.split(sep, text, flags=re.IGNORECASE)
+    lst2 = [x for x in lst if is_correct_data_item(x)]
+    lst3 = [extract_one_part(x) for x in lst2]
+    return lst3
 
 
 def extract_parts_body(text):
