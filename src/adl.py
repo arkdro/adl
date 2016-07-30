@@ -111,7 +111,7 @@ def extract_parts_body(text):
     lst2 = re.split(after, lst1[1], flags=re.IGNORECASE)
     if len(lst2) < 2:
         raise Exception("no ending separator")
-    return lst2[1]
+    return lst2[0]
 
 
 def proc_file(args):
