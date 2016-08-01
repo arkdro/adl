@@ -116,7 +116,8 @@ def extract_parts(text):
 def extract_parts_body(text):
     before = 'course_inner_media_gallery'
     after = 'slide-bottom'
-    extract_text_by_borders(before, after, text)
+    res = extract_text_by_borders(before, after, text)
+    return res
 
 
 def extract_text_by_borders(before, after, text):
