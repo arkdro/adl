@@ -122,10 +122,11 @@ def extract_parts_body(text):
 
 def extract_text_by_borders(before, after, text):
     """ Extract the text containing data items from the input text. """
-    lst1 = re.split(before, text, flags=re.IGNORECASE | re.MULTILINE)
+    lst1 = re.split(before, text, maxsplit=1,
+                    flags=re.IGNORECASE | re.MULTILINE)
     if len(lst1) < 2:
         raise Exception("no beginning separator")
-    lst2 = re.split(after, lst1[1], flags=re.IGNORECASE)
+    lst2 = re.split(after, lst1[1], maxsplit=1, flags=re.IGNORECASE)
     if len(lst2) < 2:
         raise Exception("no ending separator")
     return lst2[0]
