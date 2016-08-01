@@ -113,9 +113,13 @@ def extract_parts(text):
 
 
 def extract_parts_body(text):
-    """ Extract the text containing data items from the input text. """
     before = 'course_inner_media_gallery'
     after = 'slide-bottom'
+    extract_text_by_borders(before, after, text)
+
+
+def extract_text_by_borders(before, after, text):
+    """ Extract the text containing data items from the input text. """
     lst1 = re.split(before, text, flags=re.IGNORECASE)
     if len(lst1) < 2:
         raise Exception("no beginning separator")
