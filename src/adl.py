@@ -175,7 +175,10 @@ def extract_video_url(dest, text):
     before = '''<div[^<>]+\\bid\\s*=\\s*['"]vid_transcript['"]'''
     after = '''Subtitle'''
     inner = extract_text_by_borders(before, after, text)
-    link = extract_link(inner)
+    before2 = '''\\bArchive\\b'''
+    after2 = '''<\\/'''
+    inner2 = extract_text_by_borders(before2, after2, inner)
+    link = extract_link(inner2)
     res = urllib.parse.urljoin(dest, link)
     return res
 
