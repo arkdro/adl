@@ -142,18 +142,54 @@ def proc_file(args):
 
 def get_one_part(item, timeout):
     """ fetch one part """
+    logging.debug('get_one_part, input item: {}'.format(item))
     (num, title, url) = item
     (dest, text) = load_url(url, timeout)
     transcript_url = extract_transcript_url(dest, text)
+    logging.debug('get_one_part, tr: {}'.format(transcript_url))
     notes_url = extract_notes_url(dest, text)
+    logging.debug('get_one_part, no: {}'.format(notes_url))
     video_url = extract_video_url(dest, text)
+    logging.debug('get_one_part, vi: {}'.format(video_url))
     subtitle_url = extract_subtitle_url(dest, text)
-    item = (transcript_url, notes_url, video_url, subtitle_url)
-    pass
+    logging.debug('get_one_part, sub: {}'.format(subtitle_url))
+    out_item = (transcript_url, notes_url, video_url, subtitle_url)
+    logging.debug('get_one_part, output item: {}'.format(out_item))
+    return out_item
+
+
+def extract_subtitle_url(dest, text):
+    before = '''<div[^<>]+\\bid\\s*=\\s*['"]vid_transcript['"]'''
+    after = '''<\\/div>'''
+    inner = extract_text_by_borders(before, after, text)
+    before2 = '''Subtitle'''
+    after2 = '''<\\/'''
+    inner2 = extract_text_by_borders(before2, after2, inner)
+    link = extract_link(inner2)
+    res = urllib.parse.urljoin(dest, link)
+    return res
+
+
+def extract_video_url(dest, text):
+    before = '''<div[^<>]+\\bid\\s*=\\s*['"]vid_transcript['"]'''
+    after = '''Subtitle'''
+    inner = extract_text_by_borders(before, after, text)
+    link = extract_link(inner)
+    res = urllib.parse.urljoin(dest, link)
+    return res
+
+
+def extract_notes_url(dest, text):
+    before = '''<div[^<>]+\\bid\\s*=\\s*['"]vid_related['"]'''
+    after = '''<\\/div>'''
+    inner = extract_text_by_borders(before, after, text)
+    link = extract_link(inner)
+    res = urllib.parse.urljoin(dest, link)
+    return res
 
 
 def extract_transcript_url(dest, text):
-    before = '''<div[^<>]+\bid\\s*=\\s*['"]vid_playlist['"]'''
+    before = '''<div[^<>]+\\bid\\s*=\\s*['"]vid_playlist['"]'''
     after = '''<\\/div>'''
     inner = extract_text_by_borders(before, after, text)
     link = extract_link(inner)
