@@ -1,6 +1,7 @@
 # import sys
 
 import argparse
+import concurrent.futures
 import html
 import logging
 import pprint
@@ -134,7 +135,46 @@ def proc_file(args):
     (base_url, base_page) = get_base_page(args.base)
     parts = find_parts(base_url, base_page)
     logging.debug('parts: %s' % (pprint.pformat(parts)))
+    get_parts(parts)
     return
+
+
+def get_one_part(item, timeout):
+    """ fetch one part """
+    (num, title, url) = item
+    (dest, text) = load_url(url, timeout)
+    transcript_url = extract_transcript_url(dest, text)
+    notes_url = extract_notes_url(dest, text)
+    video_url = extract_video_url(dest, text)
+    subtitle_url = extract_subtitle_url(dest, text)
+    item = (transcript_url, notes_url, video_url, subtitle_url)
+    pass
+
+
+def extract_transcript_url(dest, text):
+    before = '''<div[^<>]+\bid\\s*=\\s*['"]vid_playlist['"]'''
+    after = '''<\\/div>'''
+    inner = extract_text_by_borders(before, after, text)
+    link = extract_link(inner)
+    res = urllib.parse.urljoin(dest, link)
+    return res
+
+
+def get_parts(parts):
+    """ fetch parts in parallel """
+    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+        timeout = 60
+        # Start the load operations and mark each future with its URL
+        future_to_url = {executor.submit(get_one_part, item, timeout):
+                         item for item in parts}
+        for future in concurrent.futures.as_completed(future_to_url):
+            item = future_to_url[future]
+            try:
+                data = future.result()
+            except Exception as exc:
+                logging.error('%r generated an exception: %s' % (item, exc))
+            else:
+                logging.debug('%r page is %d bytes' % (item, len(data)))
 
 
 if __name__ == "__main__":
