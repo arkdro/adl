@@ -164,7 +164,7 @@ def extract_subtitle_url(dest, text):
     after = '''<\\/div>'''
     inner = extract_text_by_borders(before, after, text)
     before2 = '''Subtitle'''
-    after2 = '''<\\/'''
+    after2 = '''<\\/a>'''
     inner2 = extract_text_by_borders(before2, after2, inner)
     link = extract_link(inner2)
     res = urllib.parse.urljoin(dest, link)
