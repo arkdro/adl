@@ -166,6 +166,16 @@ def get_one_part(outdir, item, timeout):
     fetch_files(outdir, item, basename, links)
 
 
+def build_base_name(links):
+    """ build a base name based on video or notes """
+    pass
+
+
+def fetch_files(outdir, item, basename, links):
+    """ fetch files using links. Store files using basename. """
+    pass
+
+
 def extract_subtitle_url(dest, text):
     before = '''<div[^<>]+\\bid\\s*=\\s*['"]vid_transcript['"]'''
     after = '''<\\/div>'''
