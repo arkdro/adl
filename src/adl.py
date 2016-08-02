@@ -201,12 +201,12 @@ def extract_transcript_url(dest, text):
     return res
 
 
-def get_parts(parts):
+def get_parts(outdir, parts):
     """ fetch parts in parallel """
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         timeout = 60
         # Start the load operations and mark each future with its URL
-        future_to_url = {executor.submit(get_one_part, item, timeout):
+        future_to_url = {executor.submit(get_one_part, outdir, item, timeout):
                          item for item in parts}
         for future in concurrent.futures.as_completed(future_to_url):
             item = future_to_url[future]
@@ -220,6 +220,7 @@ def get_parts(parts):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument('-d', "--outdir", help="output directory", default=".")
     parser.add_argument('-b', "--base", help="base url")
     parser.add_argument('-l', "--loglevel")
     args = parser.parse_args()
