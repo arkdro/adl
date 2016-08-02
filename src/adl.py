@@ -4,6 +4,7 @@ import argparse
 import concurrent.futures
 import html
 import logging
+import posixpath
 import pprint
 import re
 import urllib.request
@@ -168,7 +169,23 @@ def get_one_part(outdir, item, timeout):
 
 def build_base_name(links):
     """ build a base name based on video or notes """
-    pass
+    (_, notes, video, _) = links
+    basename = extract_basename(video)
+    if basename:
+        return basename
+    else:
+        basename = extract_basename(notes)
+        return basename
+
+
+def extract_basename(url):
+    """ extract base name from an url. Remove ending speed. """
+    path = urllib.parse.urlsplit(url).path
+    filename = posixpath.basename(path)
+    basename = posixpath.splitext(filename)[0]
+    regex = '''_\\d+[kmg]$'''
+    name2 = re.split(regex, basename, maxsplit=1, flags=re.IGNORECASE)
+    return name2[0]
 
 
 def fetch_files(outdir, item, basename, links):
