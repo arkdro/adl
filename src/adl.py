@@ -137,12 +137,12 @@ def proc_file(args):
     (base_url, base_page) = get_base_page(args.base)
     parts = find_parts(base_url, base_page)
     logging.debug('parts: %s' % (pprint.pformat(parts)))
-    get_parts(parts)
+    get_parts(args.outdir, parts)
     return
 
 
-def get_one_part(item, timeout):
-    """ fetch one part """
+def prepare_one_part(item, timeout):
+    """ prepare links for one part """
     logging.debug('get_one_part, input item: {}'.format(item))
     (num, title, url) = item
     (dest, text) = load_url(url, timeout)
@@ -157,6 +157,13 @@ def get_one_part(item, timeout):
     out_item = (transcript_url, notes_url, video_url, subtitle_url)
     logging.debug('get_one_part, output item: {}'.format(out_item))
     return out_item
+
+
+def get_one_part(outdir, item, timeout):
+    """ fetch one part """
+    links = prepare_one_part(item, timeout)
+    basename = build_base_name(links)
+    fetch_files(outdir, item, basename, links)
 
 
 def extract_subtitle_url(dest, text):
