@@ -196,6 +196,7 @@ def fetch_files(outdir, item, basename, links, timeout):
     (transcript_url, notes_url, video_url, subtitle_url) = links
     ensure_dir(outdir)
     fetch_transcript(outdir, basename, transcript_url, timeout)
+    fetch_notes(outdir, basename, notes_url, timeout)
     pass
 
 
@@ -203,6 +204,13 @@ def ensure_dir(outdir):
     path = pathlib.Path(outdir)
     if not path.exists():
         path.mkdir(parents=True)
+
+
+def fetch_notes(outdir, basename, url, timeout):
+    name = build_filename(outdir, basename, 'notes', url)
+    with urllib.request.urlopen(url, timeout=timeout) as conn,\
+    open(name, mode='wb', ) as fd:
+        fd.write(conn.read())
 
 
 def fetch_transcript(outdir, basename, url, timeout):
