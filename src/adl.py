@@ -193,6 +193,12 @@ def fetch_files(outdir, item, basename, links):
     pass
 
 
+def ensure_dir(outdir):
+    path = pathlib.Path(outdir)
+    if not path.exists():
+        path.mkdir(parents=True)
+
+
 def fetch_transcript(outdir, basename, url, timeout):
     name = build_filename(outdir, basename, 'tr', url)
     with urllib.request.urlopen(url, timeout=timeout) as conn,\
