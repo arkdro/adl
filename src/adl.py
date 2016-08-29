@@ -193,6 +193,15 @@ def fetch_files(outdir, item, basename, links):
     pass
 
 
+def build_filename(outdir, basename, tag, url):
+    parsed = urllib.parse.urlparse(url)
+    filename = os.path.basename(parsed.path)
+    (_, ext) = os.path.splitext(filename)
+    tagged_name = basename + '-' + tag + ext
+    fullname = os.path.join(outdir, tagged_name)
+    return fullname
+
+
 def extract_subtitle_url(dest, text):
     before = '''<div[^<>]+\\bid\\s*=\\s*['"]vid_transcript['"]'''
     after = '''<\\/div>'''
