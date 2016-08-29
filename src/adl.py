@@ -167,7 +167,7 @@ def get_one_part(outdir, item, timeout):
     """ fetch one part """
     links = prepare_one_part(item, timeout)
     basename = build_base_name(links)
-    fetch_files(outdir, item, basename, links)
+    fetch_files(outdir, item, basename, links, timeout)
 
 
 def build_base_name(links):
@@ -191,8 +191,11 @@ def extract_basename(url):
     return name2[0]
 
 
-def fetch_files(outdir, item, basename, links):
+def fetch_files(outdir, item, basename, links, timeout):
     """ fetch files using links. Store files using basename. """
+    (transcript_url, notes_url, video_url, subtitle_url) = links
+    ensure_dir(outdir)
+    fetch_transcript(outdir, basename, transcript_url, timeout)
     pass
 
 
