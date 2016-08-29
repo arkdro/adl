@@ -4,9 +4,12 @@ import argparse
 import concurrent.futures
 import html
 import logging
+import os.path
+import pathlib
 import posixpath
 import pprint
 import re
+import urllib.parse
 import urllib.request
 
 
