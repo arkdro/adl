@@ -193,6 +193,15 @@ def fetch_files(outdir, item, basename, links):
     pass
 
 
+def fetch_transcript(outdir, basename, url, timeout):
+    name = build_filename(outdir, basename, 'tr', url)
+    with urllib.request.urlopen(url, timeout=timeout) as conn,\
+    open(name, mode='wb', ) as fd:
+        logging.debug('fetch transcript: {}, {}'
+                      .format(url, pprint.pformat(conn.info)))
+        fd.write(conn.read())
+
+
 def build_filename(outdir, basename, tag, url):
     parsed = urllib.parse.urlparse(url)
     filename = os.path.basename(parsed.path)
