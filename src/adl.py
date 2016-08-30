@@ -171,10 +171,12 @@ def get_one_part(outdir, item, timeout):
     basenames = build_base_name(links)
     fetch_files(outdir2, item, basenames, links, timeout)
 
+
 def build_item_outdir(num, outdir):
     num_str = "{:02}".format(num)
     name = os.path.join(outdir, num_str)
     return name
+
 
 def build_base_name(links):
     """ build a base name based on video or notes """
