@@ -333,7 +333,10 @@ def get_parts(outdir, parts):
             except Exception as exc:
                 logging.error('%r generated an exception: %s' % (item, exc))
             else:
-                logging.debug('%r page is %d bytes' % (item, len(data)))
+                if data:
+                    logging.debug('%r page is %d bytes' % (item, len(data)))
+                else:
+                    logging.debug('%r page, no data' % (item))
 
 
 if __name__ == "__main__":
