@@ -240,7 +240,10 @@ def build_filename(outdir, basename, tag, url):
     parsed = urllib.parse.urlparse(url)
     filename = os.path.basename(parsed.path)
     (_, ext) = os.path.splitext(filename)
-    tagged_name = basename + '-' + tag + ext
+    if tag:
+        tagged_name = basename + '-' + tag + ext
+    else:
+        tagged_name = basename + ext
     fullname = os.path.join(outdir, tagged_name)
     return fullname
 
