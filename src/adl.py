@@ -251,6 +251,10 @@ def fetch_transcript(outdir, basename, url, timeout):
 
 def fetch_file(outdir, basename, url, timeout, tag):
     name = build_filename(outdir, basename, tag, url)
+    fetch_file_to_local_file(name, url, timeout)
+
+
+def fetch_file_to_local_file(name, url, timeout):
     with urllib.request.urlopen(url, timeout=timeout) as conn,\
     open(name, mode='wb', ) as fd:
         fd.write(conn.read())
