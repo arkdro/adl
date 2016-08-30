@@ -218,6 +218,7 @@ def fetch_video(outdir, basename, url, timeout):
         logging.debug('fetch_video, headers: {}'.format(conn.getheaders()))
         while True:
             chunk = conn.read(size)
+            logging.debug('fetch_video, chunk: {}'.format(len(chunk)))
             if chunk:
                 fd.write(chunk)
             else:
