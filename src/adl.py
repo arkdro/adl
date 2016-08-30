@@ -220,21 +220,7 @@ def ensure_dir(outdir):
 def fetch_video(outdir, basename, url, timeout):
     logging.debug('fetch_video, url: {}'.format(url))
     name = build_vidname(outdir, url)
-    size = 64 * 1024
-    total = 0
-    with urllib.request.urlopen(url, timeout=timeout) as conn,\
-    open(name, mode='wb', ) as fd:
-        logging.debug('fetch_video, headers: {}'.format(conn.getheaders()))
-        while True:
-            chunk = conn.read(size)
-            total += len(chunk)
-            if not total % 2 ** 20:
-                logging.debug('fetch_video, chunk, total: {}'.format(total))
-            if chunk:
-                fd.write(chunk)
-            else:
-                logging.debug('fetch_video, last, total: {}'.format(total))
-                break
+    fetch_file_to_local_file(name, url, timeout)
 
 
 def fetch_subtitles(outdir, basename, url, timeout):
