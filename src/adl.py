@@ -166,8 +166,8 @@ def prepare_one_part(item, timeout):
 def get_one_part(outdir, item, timeout):
     """ fetch one part """
     links = prepare_one_part(item, timeout)
-    basename = build_base_name(links)
-    fetch_files(outdir, item, basename, links, timeout)
+    basenames = build_base_name(links)
+    fetch_files(outdir, item, basenames, links, timeout)
 
 
 def build_base_name(links):
@@ -188,17 +188,18 @@ def extract_basename(url):
     basename = posixpath.splitext(filename)[0]
     regex = '''_\\d+[kmg]$'''
     name2 = re.split(regex, basename, maxsplit=1, flags=re.IGNORECASE)
-    return name2[0]
+    return (basename, name2[0])
 
 
-def fetch_files(outdir, item, basename, links, timeout):
+def fetch_files(outdir, item, basenames, links, timeout):
     """ fetch files using links. Store files using basename. """
     (transcript_url, notes_url, video_url, subtitle_url) = links
+    (vidname, basename) = basenames
     ensure_dir(outdir)
     fetch_transcript(outdir, basename, transcript_url, timeout)
     fetch_notes(outdir, basename, notes_url, timeout)
-    fetch_subtitles(outdir, basename, subtitle_url, timeout)
-    fetch_video(outdir, basename, video_url, timeout)
+    fetch_subtitles(outdir, vidname, subtitle_url, timeout)
+    fetch_video(outdir, vidname, video_url, timeout)
     pass
 
 
