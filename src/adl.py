@@ -88,7 +88,7 @@ def extract_number(text):
     regex = '(\\d+)'
     match = re.search(regex, text)
     if match and len(match.groups()) > 0:
-        return match.group(1)
+        return int(match.group(1))
 
 
 def extract_link(text):
@@ -166,9 +166,15 @@ def prepare_one_part(item, timeout):
 def get_one_part(outdir, item, timeout):
     """ fetch one part """
     links = prepare_one_part(item, timeout)
+    num = item[0]
+    outdir2 = build_item_outdir(num, outdir)
     basenames = build_base_name(links)
-    fetch_files(outdir, item, basenames, links, timeout)
+    fetch_files(outdir2, item, basenames, links, timeout)
 
+def build_item_outdir(num, outdir):
+    num_str = "{:02}".format(num)
+    name = os.path.join(outdir, num_str)
+    return name
 
 def build_base_name(links):
     """ build a base name based on video or notes """
