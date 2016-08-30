@@ -212,7 +212,13 @@ def fetch_video(outdir, basename, url, timeout):
     name = build_filename(outdir, basename, 'vid', url)
     with urllib.request.urlopen(url, timeout=timeout) as conn,\
     open(name, mode='wb', ) as fd:
-        fd.write(conn.read())
+        logging.debug('fetch_video, headers: {}'.format(conn.getheaders()))
+        while True:
+            chunk = conn.read(size)
+            if chunk:
+                fd.write(chunk)
+            else:
+                break
 
 
 def fetch_subtitles(outdir, basename, url, timeout):
