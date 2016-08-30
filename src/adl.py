@@ -343,6 +343,6 @@ if __name__ == "__main__":
     parser.add_argument('-l', "--loglevel")
     args = parser.parse_args()
     logging.basicConfig(level=args.loglevel.upper(),
-                        format='%(asctime)s %(message)s')
+                        format='%(asctime)s %(threadName)s %(thread)d %(message)s')
     proc_file(args)
 
