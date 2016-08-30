@@ -209,7 +209,8 @@ def ensure_dir(outdir):
 
 
 def fetch_video(outdir, basename, url, timeout):
-    name = build_filename(outdir, basename, 'vid', url)
+    logging.debug('fetch_video, url: {}'.format(url))
+    name = build_vidname(outdir, url)
     size = 16 * 1024
     with urllib.request.urlopen(url, timeout=timeout) as conn,\
     open(name, mode='wb', ) as fd:
