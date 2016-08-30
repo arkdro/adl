@@ -238,21 +238,19 @@ def fetch_video(outdir, basename, url, timeout):
 
 
 def fetch_subtitles(outdir, basename, url, timeout):
-    name = build_filename(outdir, basename, '', url)
-    with urllib.request.urlopen(url, timeout=timeout) as conn,\
-    open(name, mode='wb', ) as fd:
-        fd.write(conn.read())
+    fetch_file(outdir, basename, url, timeout, '')
 
 
 def fetch_notes(outdir, basename, url, timeout):
-    name = build_filename(outdir, basename, 'notes', url)
-    with urllib.request.urlopen(url, timeout=timeout) as conn,\
-    open(name, mode='wb', ) as fd:
-        fd.write(conn.read())
+    fetch_file(outdir, basename, url, timeout, 'notes')
 
 
 def fetch_transcript(outdir, basename, url, timeout):
-    name = build_filename(outdir, basename, 'tr', url)
+    fetch_file(outdir, basename, url, timeout, 'tr')
+
+
+def fetch_file(outdir, basename, url, timeout, tag):
+    name = build_filename(outdir, basename, tag, url)
     with urllib.request.urlopen(url, timeout=timeout) as conn,\
     open(name, mode='wb', ) as fd:
         fd.write(conn.read())
