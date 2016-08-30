@@ -255,9 +255,21 @@ def fetch_file(outdir, basename, url, timeout, tag):
 
 
 def fetch_file_to_local_file(name, url, timeout):
+    size = 64 * 1024
+    total = 0
     with urllib.request.urlopen(url, timeout=timeout) as conn,\
-    open(name, mode='wb', ) as fd:
-        fd.write(conn.read())
+    open(name, mode='wb') as fd:
+        logging.debug('fetch to local, headers: {}'.format(conn.getheaders()))
+        while True:
+            chunk = conn.read(size)
+            total += len(chunk)
+            if not total % 2 ** 20:
+                logging.debug('fetch to local, chunk, total: {}'.format(total))
+            if chunk:
+                fd.write(chunk)
+            else:
+                logging.debug('fetch to local, last, total: {}'.format(total))
+                break
 
 
 def build_filename(outdir, basename, tag, url):
