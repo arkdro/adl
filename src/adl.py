@@ -245,6 +245,13 @@ def build_filename(outdir, basename, tag, url):
     return fullname
 
 
+def build_vidname(outdir, url):
+    parsed = urllib.parse.urlparse(url)
+    filename = os.path.basename(parsed.path)
+    fullname = os.path.join(outdir, filename)
+    return fullname
+
+
 def extract_subtitle_url(dest, text):
     before = '''<div[^<>]+\\bid\\s*=\\s*['"]vid_transcript['"]'''
     after = '''<\\/div>'''
