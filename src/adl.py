@@ -170,6 +170,7 @@ def get_one_part(outdir, item, timeout):
     outdir2 = build_item_outdir(num, outdir)
     basenames = build_base_name(links)
     fetch_files(outdir2, item, basenames, links, timeout)
+    return True
 
 
 def build_item_outdir(num, outdir):
@@ -208,7 +209,6 @@ def fetch_files(outdir, item, basenames, links, timeout):
     fetch_notes(outdir, basename, notes_url, timeout)
     fetch_subtitles(outdir, vidname, subtitle_url, timeout)
     fetch_video(outdir, vidname, video_url, timeout)
-    pass
 
 
 def ensure_dir(outdir):
@@ -333,10 +333,7 @@ def get_parts(outdir, parts):
             except Exception as exc:
                 logging.error('%r generated an exception: %s' % (item, exc))
             else:
-                if data:
-                    logging.debug('%r page is %d bytes' % (item, len(data)))
-                else:
-                    logging.debug('%r page, no data' % (item))
+                logging.debug('%r page, result: %r' % (item, data))
 
 
 if __name__ == "__main__":
